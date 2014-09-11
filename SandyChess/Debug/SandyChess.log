@@ -1,0 +1,20 @@
+﻿Build started 12/09/2014 7:37:28 AM.
+     1>Project "D:\code\visualstudio\SandyChess\SandyChess\SandyChess.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\SandyChess.unsuccessfulbuild".
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\code\visualstudio\SandyChess\Debug\SandyChess.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SandyChess.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\code\visualstudio\SandyChess\Debug\SandyChess.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\code\visualstudio\SandyChess\Debug\SandyChess.lib" /MACHINE:X86 Debug\MainWindow.obj
+     1>MainWindow.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+         SandyChess.vcxproj -> D:\code\visualstudio\SandyChess\Debug\SandyChess.exe
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\code\visualstudio\SandyChess\Debug\SandyChess.exe;#1" /manifest Debug\SandyChess.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\SandyChess.unsuccessfulbuild".
+         Touching "Debug\SandyChess.lastbuildstate".
+     1>Done Building Project "D:\code\visualstudio\SandyChess\SandyChess\SandyChess.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.16
