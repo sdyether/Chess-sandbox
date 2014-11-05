@@ -1,68 +1,102 @@
 #include "MainWindow.h"
+#include "WinClass.h"
+#include "WinMaker.h"
+#include "resource.h"
 
-int WINAPI WinMain (HINSTANCE hInst, HINSTANCE hPrevInst, char * cmdParam, int cmdShow) {
-	wchar_t className [] = L"Chess Sandbox";
+#include <stdlib.h>
+#include <string.h>
+#include <tchar.h>
+#include <exception>
 
-	WinClass winClass (WindowProcedure, className, hInst);
-	winClass.Register ();
 
-	WinMaker win (L"Chess Sandbox", className, hInst);
-	win.Show (cmdShow);
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, char * cmdParam, int cmdShow) {
+	try {
 
-	MSG  msg;
-	int status;
+		wchar_t className [] = L"Chess Sandbox";
 
-	while ((status = ::GetMessage (& msg, 0, 0, 0)) != 0)
-	{
-		if (status == -1)
-			return -1;
-		::DispatchMessage (& msg);
+		//create top window class
+		TopWindowClass topWinClass(ID_MAIN, hInst, MainWndProc);
+
+		//only allow a single instance of the program
+		HWND otherInstance = topWinClass.GetRunningWindow();
+		if (otherInstance != 0) {
+			return 0;
+		}
+
+		topWinClass.Register();
+
+		//create top window
+		TopWinMaker topWin(topWinClass, className);
+		topWin.Create();
+		topWin.Show(cmdShow);
+
+		/*
+		//create and register the class
+		WinClass winClass (WindowProcedure, className, hInst);
+		winClass.Register ();
+
+		//create and show the window
+		WinMaker win (L"Chess Sandbox", className, hInst);
+		win.Show (cmdShow);
+		*/
+		
+		//main message loop
+		MSG  msg;
+		while (GetMessage(&msg, NULL, 0, 0)) {
+			TranslateMessage(&msg);
+
+			//send back to Windows
+			DispatchMessage(&msg);
+		}
+
+		return (int) msg.wParam;
+
+	}
+	catch (std::exception& e) {
+		wchar_t buf [100];
+		wsprintf (buf, L"Exception Caught: %s", e.what());
+		::MessageBox (0, buf, L"Exception", MB_ICONEXCLAMATION | MB_OK);
+		return -1;
+	}
+	catch (...) {
+		::MessageBox (0, L"Unknown", L"Exception", MB_ICONEXCLAMATION | MB_OK);
+		return -1;
 	}
 
-	return msg.wParam;
+	return 0;
 }
 
-WinClass::WinClass(WNDPROC winProc, wchar_t const * className, HINSTANCE hInst) {
-	//_class.cbSize = sizeof(WNDCLASSEX);
-	//_class.style          = CS_HREDRAW | CS_VREDRAW;
-	_class.style		  = 0;
-	_class.lpfnWndProc    = winProc; // window procedure
-	_class.cbClsExtra     = 0;
-	_class.cbWndExtra     = 0;
-	_class.hInstance      = hInst; // owner of class
-	//_class.hIcon          = LoadIcon(hInst, MAKEINTRESOURCE(IDI_APPLICATION));
-	_class.hIcon		  = 0;
-	_class.hCursor        = ::LoadCursor(0, IDC_ARROW);
-	_class.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-	_class.lpszMenuName   = 0;
-	_class.lpszClassName  = className;
-	//_class.hIconSm        = LoadIcon(_class.hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
-}
 
-WinMaker::WinMaker (wchar_t const * caption, wchar_t const * className, HINSTANCE hInstance) {
-	_hwnd = ::CreateWindow(
-		className,            // name of a registered window class
-		caption,              // window caption
-		WS_OVERLAPPEDWINDOW,  // window style
-		CW_USEDEFAULT,        // x position
-		CW_USEDEFAULT,        // y position
-		CW_USEDEFAULT,        // witdh
-		CW_USEDEFAULT,        // height
-		0,                    // handle to parent window
-		0,                    // handle to menu
-		hInstance,            // application instance
-		0);                   // window creation data
-}
+//special method for callbacks
+LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	PAINTSTRUCT ps;
+	HDC hdc;
+	wchar_t greeting[] = L"Hello, World!";
 
-LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message)
 	{
-		case WM_DESTROY:
-			::PostQuitMessage (0);
-			return 0;
+	case WM_PAINT:
+		hdc = BeginPaint(hwnd, &ps);
 
+		// Here your application is laid out.
+		// For this introduction, we just print out "Hello, World!"
+		// in the top left corner.
+		TextOut(hdc,
+			5, 5,
+			greeting, _tcslen(greeting));
+		// End application-specific layout section.
+
+		EndPaint(hwnd, &ps);
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hwnd, message, wParam, lParam);
+		break;
 	}
-	return ::DefWindowProc (hwnd, message, wParam, lParam );
+
+	return 0;
 }
 
 

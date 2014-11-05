@@ -74,10 +74,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Canvas.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="View.h" />
+    <ClInclude Include="WinClass.h" />
+    <ClInclude Include="WinMaker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="View.cpp" />
+    <ClCompile Include="WinClass.cpp" />
+    <ClCompile Include="WinMaker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
